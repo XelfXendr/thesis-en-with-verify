@@ -2,6 +2,7 @@ stages:
   - build
   - verify
 
+# Compile pdfs and expose them as artifacts
 latex:
   stage: build
   image: registry.gitlab.com/islandoftex/images/texlive:latest
@@ -17,10 +18,11 @@ latex:
       - abstract-en.pdf
     expire_in: 1 week
 
+# Verify pdf-a compatibility of generated pdfs
 verapdf:
   stage: verify
   image: ghcr.io/mff-cuni-cz/cuni-thesis-validator
-  script: |
+  script:
     - verify thesis.pdf | tee /dev/stderr | grep 'isCompliant="true"'
     - verify abstract-cs.pdf | tee /dev/stderr | grep 'isCompliant="true"'
     - verify abstract-en.pdf | tee /dev/stderr | grep 'isCompliant="true"'
