@@ -1,4 +1,5 @@
 # A template for typesetting thesis at MFF UK in LaTeX
+## - with GitHub and GitLab pipelines that verify PDF/A compability on push and expose compiled PDFs as downloadable artifacts 🦊 
 
 ## Overview
 
