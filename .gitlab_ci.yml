@@ -1,0 +1,26 @@
+stages:
+  - build
+  - verify
+
+latex:
+  stage: build
+  image: registry.gitlab.com/islandoftex/images/texlive:latest
+  script:
+    - make
+  after_script:
+    - cat thesis.log
+  artifacts:
+    expose_as: 'pdf'
+    paths:
+      - thesis.pdf
+      - abstract-cs.pdf
+      - abstract-en.pdf
+    expire_in: 1 week
+
+verapdf:
+  stage: verify
+  image: ghcr.io/mff-cuni-cz/cuni-thesis-validator
+  script: |
+    - verify thesis.pdf | tee /dev/stderr | grep 'isCompliant="true"'
+    - verify abstract-cs.pdf | tee /dev/stderr | grep 'isCompliant="true"'
+    - verify abstract-en.pdf | tee /dev/stderr | grep 'isCompliant="true"'
